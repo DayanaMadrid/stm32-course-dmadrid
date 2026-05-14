@@ -22,8 +22,33 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+//definición de variables
+uint8_t dummy_8bit = 0;
+uint16_t dummy_16bit = 0;
+uint32_t dummy_32bit = 0;
+uint8_t daniel_8 = 0;
+
+uint16_t dummy_16bit_dec = 0;
+uint16_t dummy_16bit_bin = 0;
+uint16_t dummy_16bit_hex = 0;
+
+
 int main(void)
 {
-    /* Loop forever */
-	for(;;);
+	dummy_8bit = 123;
+	dummy_16bit = 4986;
+	dummy_32bit = 12345678;
+
+	dummy_16bit_dec = 32;
+	dummy_16bit_bin = 0x20;
+	dummy_16bit_hex = 0b100000;
+
+	//cargando el valor de xxxx en la variable
+	//dummy_16bit_bin = dummy_16bit_bin >>
+
+	daniel_8 = 735;
+
+
+	while(1){
+	}
 }
