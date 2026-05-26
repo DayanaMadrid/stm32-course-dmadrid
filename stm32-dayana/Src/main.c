@@ -17,6 +17,7 @@
  */
 
 #include <stdint.h>
+#include <stm32f4xx.h>
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -33,6 +34,15 @@ uint16_t dummy_16bit_bin = 0;
 uint16_t dummy_16bit_hex = 0;
 
 
+static void delay(volatile uint32_t count)
+{
+
+	while (count--){
+
+		__NOP();
+	}
+}
+
 int main(void)
 {
 	dummy_8bit = 123;
@@ -47,8 +57,37 @@ int main(void)
 	//dummy_16bit_bin = dummy_16bit_bin >>
 
 	daniel_8 = 735;
+	//LO PRIMERO QUE SE HACE ES ACTIVAR LA SEÑAL DE RELOJ,
+	//DEPENDIENDO DEL PUERTO EN EL QUE ESTEMOS TRABAJANDO
+	//NECESITAMOS PONER LA POSICIÓN DONDE ESTA EL PUERTO QUE TRABAJAREMOS
+
+
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //Ya encendimos la señal de reloj
+
+	//PODEMOS REDEFINIR EL NOMBRE
+	//reiniciar registro
+	GPIOA->MODER &= ~GPIO_MODER_MODER5; //limpie el registro
+	GPIOA->MODER |= GPIO_MODER_MODE5_0;
+
+	GPIOA->OTYPER &= ~GPIO_OTYPER_OT5;
+
+	GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR5;
+	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_1;
+
+	//(GPIOx_PUPDR)
+	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPD5;
+	//GPIOA->PUPDR |= GPIO_PUPDR_PUPD5_1;
+
+	//GPIOA->ODR &= ~GPIO_ODR_OD5;
+
+
 
 
 	while(1){
+		GPIOA->ODR |= GPIO_ODR_OD5;
+		delay(500000);
 	}
+	return 0;
+
+
 }
